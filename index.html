@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#091526" />
+  <meta name="description" content="신포역에서 인하대학교 후문까지, 직진 우선 경유지와 GPS를 활용하는 도보 경로 안내" />
+  <title>직진길 · 신포역 → 인하대 후문</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23091526'/%3E%3Cpath d='M15 45L30 18L39 34L49 20' stroke='%2356e6b0' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhG3h4gNPb8uZa87mH7d5kGiwzFq6Cp40W9k=" crossorigin="" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="logo" aria-hidden="true">↗</span><div><strong>직진길</strong><span>GPS WALK GUIDE</span></div></div>
+      <span class="tag">신포역 → 인하대 후문</span>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="경로 안내">
+        <div class="eyebrow"><span class="pulse-dot"></span> 직진 우선 · 도보</div>
+        <h1>신포역에서<br/><em>인하대 후문까지.</em></h1>
+        <p>앞서 잡은 <b>숭의로터리 → 용현고가교</b> 경유 코스를 따라가요. 실제 보행 가능 경로는 온라인 도보 길찾기로 계산합니다.</p>
+      </section>
+
+      <section class="metrics" aria-label="경로 요약">
+        <div><span>남은 거리</span><strong id="distance">—</strong></div>
+        <div><span>예상 도보시간</span><strong id="eta">—</strong></div>
+        <div><span>GPS 정확도</span><strong id="accuracy">대기 중</strong></div>
+      </section>
+
+      <section class="map-panel" aria-label="도보 지도">
+        <div id="map" role="application" aria-label="경유지 및 내 위치를 표시하는 지도"></div>
+        <div class="map-chip" id="mapChip" aria-live="polite">도보 경로 계산 전</div>
+        <div class="map-actions">
+          <button type="button" id="centerBtn" title="현재 위치로 지도 이동" aria-label="현재 위치로 지도 이동">◎</button>
+          <button type="button" id="fullBtn" title="전체 경로 보기" aria-label="전체 경로 보기">⤢</button>
+        </div>
+      </section>
+
+      <section class="controls" aria-label="GPS 내비게이션 조작">
+        <button type="button" class="primary" id="gpsBtn">◉ GPS 시작</button>
+        <button type="button" class="secondary" id="rerouteBtn" disabled>↻ 내 위치에서 재탐색</button>
+        <button type="button" class="secondary" id="routeBtn">경로 다시 계산</button>
+      </section>
+
+      <section class="next-turn" aria-live="polite">
+        <div class="turn-icon" id="turnIcon">↑</div>
+        <div class="turn-copy"><span id="turnCaption">다음 안내</span><strong id="turnText">경로를 불러오는 중입니다</strong><small id="turnSub">GPS를 켜면 현재 위치 기준으로 표시됩니다.</small></div>
+      </section>
+
+      <div class="alert" role="status" id="notice">지도와 경로를 불러오는 중입니다.</div>
+
+      <section class="waypoints" aria-label="경유지 목록">
+        <div class="section-heading"><div><h2>고정 경유지</h2><p>초기 위치는 대략적인 기준점입니다. 핀을 끌어 실제 횡단보도와 보행로에 맞춰 조정하세요.</p></div><button type="button" class="text-button" id="resetBtn">초기화</button></div>
+        <ol id="waypointList"></ol>
+      </section>
+
+      <section class="fineprint">
+        <strong>길 찾기 참고사항</strong>
+        <p>이 앱은 횡단보도 개수를 직접 측정하거나 최소화하지 않습니다. 경유지로 큰 방향과 직진 구간을 유도하며, 보행자 경로 데이터의 정확성은 지역별로 다릅니다. 도로에서는 실제 보행 신호, 횡단보도, 표지판을 우선하세요.</p>
+        <p>내 GPS 좌표는 평소 브라우저 안에서만 처리하며, <b>‘내 위치에서 재탐색’</b>을 누를 때에만 경로 계산 서버로 전달합니다. 길찾기 요청과 지도 타일을 내려받으려면 인터넷 연결이 필요합니다.</p>
+        <p class="attribution">지도 © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap 기여자</a> · 경로 API <a href="https://valhalla.openstreetmap.de/" target="_blank" rel="noopener noreferrer">Valhalla</a></p>
+      </section>
+    </main>
+    <footer>직진길 · 개인용 보행 경로 프로토타입</footer>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
